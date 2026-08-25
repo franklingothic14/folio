@@ -152,7 +152,7 @@ nav a:hover { color: var(--accent); }
 }
 
 /* --------------------------------------
-   SECTIONS & CAROUSEL (VIDEOS)
+   WORK SECTION LAYOUT
 --------------------------------------- */
 .work-container {
   position: relative;
@@ -173,10 +173,11 @@ nav a:hover { color: var(--accent); }
 .category-section {
   margin-bottom: 80px;
 }
+
 .category-title {
   font-size: 0.85rem;
   color: var(--text-main);
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   text-transform: uppercase;
 }
 .category-title::before {
@@ -185,33 +186,77 @@ nav a:hover { color: var(--accent); }
   margin-right: 10px;
 }
 
-/* Horizontal Scroll (Carousel) */
-.carousel {
+/* --------------------------------------
+   DYNAMIC FOLDERS
+--------------------------------------- */
+.folder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.folder-card {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  border: 1px solid var(--line-dim);
+  background: transparent;
+  color: var(--text-main);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.folder-card:hover {
+  border-color: var(--accent);
+  background: rgba(230, 57, 70, 0.05);
+}
+
+.folder-icon {
+  font-size: 1.5rem;
+  color: var(--accent);
+  margin-bottom: 15px;
+}
+
+.folder-name {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.folder-count {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
+.back-btn {
+  display: inline-block;
+  margin-bottom: 30px;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.2s;
+}
+
+.back-btn:hover {
+  color: #fff;
+}
+
+/* --------------------------------------
+   VIDEO GRID (INSIDE FOLDERS)
+--------------------------------------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 30px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 20px;
-  -ms-overflow-style: none; /* IE/Edge */
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: var(--accent) var(--bg);
 }
 
-/* Custom Scrollbar */
-.carousel::-webkit-scrollbar {
-  height: 4px;
-}
-.carousel::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05); 
-}
-.carousel::-webkit-scrollbar-thumb {
-  background: var(--accent); 
-}
-
-/* Video Card in Carousel */
-.carousel-card {
-  flex: 0 0 450px; /* Exact width of the video window */
-  scroll-snap-align: start;
+.project-card {
   background: transparent;
 }
 
@@ -220,8 +265,13 @@ nav a:hover { color: var(--accent); }
   background: #000;
   overflow: hidden;
   border: 1px solid var(--line-dim);
-  aspect-ratio: 16 / 9; /* Perfect video aspect ratio */
+  aspect-ratio: 16 / 9; /* Perfect standard video ratio */
   width: 100%;
+}
+
+/* Remove absolute padding-top hack, use standard aspect ratio */
+.video-wrap[style] {
+  padding-top: 0 !important; 
 }
 
 .video-wrap iframe {
@@ -280,8 +330,7 @@ nav a:hover { color: var(--accent); }
   .hero-text { left: 40px; right: 20px; bottom: 20px; }
   .work-container { padding: 0 20px 80px 40px; }
   
-  /* Mobile Carousel Adjustments */
-  .carousel-card {
-    flex: 0 0 85vw; /* Almost full screen width for easy swiping */
+  .folder-grid, .grid {
+    grid-template-columns: 1fr; /* Full width items on mobile */
   }
 }
