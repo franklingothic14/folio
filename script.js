@@ -1,9 +1,12 @@
 const API_URL = "https://vimeo.franklingothic14.workers.dev";
 
+// ВАЖЛИВО: Вкажіть тут точний порядок категорій, як ви хочете їх бачити на головній сторінці.
+// Назви мають співпадати з назвами папок/тегів на Vimeo (з урахуванням регістру).
+// Категорії, яких немає в цьому списку, будуть показані в кінці.
+const CATEGORY_ORDER = ["NGO", "documentary", "ADVERTISING", "OTHER_PROJECTS"]; 
+
 async function loadPortfolioVideos() {
   const gridContainer = document.getElementById("work-grid");
-  
-  // Перевіряємо, чи ми знаходимося всередині якоїсь папки (через URL параметр ?cat=...)
   const urlParams = new URLSearchParams(window.location.search);
   const currentCategory = urlParams.get('cat');
 
@@ -24,7 +27,6 @@ async function loadPortfolioVideos() {
 
     gridContainer.innerHTML = ""; 
 
-    // Групуємо відео по категоріях
     const groupedVideos = {};
     videos.forEach(video => {
       let cat = video.category;
@@ -35,9 +37,17 @@ async function loadPortfolioVideos() {
       groupedVideos[cat].push(video);
     });
 
-    // === СЦЕНАРІЙ 1: КОРИСТУВАЧ ЗАЙШОВ В ОКРЕМУ ПАПКУ ===
+    // Сортуємо ключі об'єкта groupedVideos відповідно до масиву CATEGORY_ORDER
+    const sortedCategories = Object.keys(groupedVideos).sort((a, b) => {
+      let indexA = CATEGORY_ORDER.indexOf(a);
+      let indexB = CATEGORY_ORDER.indexOf(b);
+      // Якщо категорії немає в масиві, відправляємо її в кінець
+      if (indexA === -1) indexA = 999; 
+      if (indexB === -1) indexB = 999;
+      return indexA - indexB;
+    });
+
     if (currentCategory && groupedVideos[currentCategory]) {
-      // Кнопка "Назад"
       const backBtn = document.createElement("a");
       backBtn.href = window.location.pathname + "#work"; 
       backBtn.className = "back-btn";
@@ -53,17 +63,23 @@ async function loadPortfolioVideos() {
       section.appendChild(heading);
 
       const grid = document.createElement("div");
-      grid.className = "grid"; // Звичайна сітка для відео
+      grid.className = "masonry-grid"; // Змінили клас на masonry-grid
 
       groupedVideos[currentCategory].forEach((video) => {
         const videoId = video.id;
         const title = video.name || "[UNTITLED_PROJECT]";
         const playerParams = "title=0&byline=0&portrait=0&color=e63946";
-
+        
+        // Визначаємо співвідношення сторін. Якщо Vimeo не віддає width/height, ставимо 16/9 за замовчуванням.
+        // Оскільки наш Worker зараз повертає спрощений об'єкт, ми симулюємо пропорції. 
+        // В ідеалі Worker має повертати video.width і video.height. 
+        // Поки що CSS буде робити магію.
+        
         const card = document.createElement("article");
         card.className = "project-card";
+        
         card.innerHTML = `
-          <div class="video-wrap" style="padding-top: 56.25%;">
+          <div class="video-wrap">
             <iframe 
               src="https://player.vimeo.com/video/${videoId}?${playerParams}"
               frameborder="0"
@@ -81,14 +97,14 @@ async function loadPortfolioVideos() {
       section.appendChild(grid);
       gridContainer.appendChild(section);
     } 
-    // === СЦЕНАРІЙ 2: ГОЛОВНА СТОРІНКА (ПОКАЗУЄМО ПАПКИ) ===
     else {
       const folderGrid = document.createElement("div");
       folderGrid.className = "folder-grid";
 
-      for (const [catName, catVideos] of Object.entries(groupedVideos)) {
+      // Використовуємо відсортований масив категорій
+      sortedCategories.forEach(catName => {
+        const catVideos = groupedVideos[catName];
         const folder = document.createElement("a");
-        // Формуємо лінк на цю ж сторінку, але з параметром категорії
         folder.href = `?cat=${encodeURIComponent(catName)}#work`;
         folder.className = "folder-card";
         folder.innerHTML = `
@@ -97,7 +113,7 @@ async function loadPortfolioVideos() {
           <div class="folder-count">[ ${catVideos.length} FILES ]</div>
         `;
         folderGrid.appendChild(folder);
-      }
+      });
       gridContainer.appendChild(folderGrid);
     }
 
