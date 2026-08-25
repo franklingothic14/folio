@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[META_TITLE]</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Background Axis -->
+  <div class="axis axis-v axis-1"></div>
+  <div class="axis axis-v axis-red"></div> 
+  <div class="axis axis-v axis-3"></div>
+  <div class="axis axis-h axis-4"></div>
+  
+  <!-- Micro Data -->
+  <div class="micro-data data-tl">
+    <span class="red-text">[SYS_CODE_1]</span><br>
+    SYS.INIT_
+  </div>
+  <div class="micro-data data-tr">
+    [DATA.STREAM_ACTIVE]<br>
+    DIR: ROOT/[DIR_NAME]<br>
+    <span class="red-text">STATUS: OVRD</span>
+  </div>
+
+  <header class="site-header">
+    <h1 class="logo">[LOGO_TEXT]</h1>
+    <nav>
+      <a href="#work">[NAV_ITEM_1]</a>
+      <a href="#about">[NAV_ITEM_2]</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-graphic">
+    <div class="radar-circle">
+      <div class="radar-inner"></div>
+      <div class="radar-cross"></div>
+    </div>
+    <div class="red-square"></div>
+    
+    <div class="hero-text">
+      <h2>[HERO_TITLE_LINE_1]<br>[HERO_TITLE_LINE_2]</h2>
+      <p>[HERO_DESCRIPTION]</p>
+    </div>
+  </section>
+
+  <!-- Work Section -->
+  <section id="work" class="work-container">
+    <div class="section-divider">
+      <span class="red-text">■</span> [SECTION_1_TITLE]
+    </div>
+    <div id="work-grid" class="grid-container">
+      <p class="loading-msg">AWAITING SIGNAL...</p>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="work-container about-section">
+    <div class="section-divider">
+      <span class="red-text">■</span> [SECTION_2_TITLE]
+    </div>
+    <div class="text-block">
+      <p>[ABOUT_PARAGRAPH_1]</p>
+      <br>
+      <p>[ABOUT_PARAGRAPH_2]</p>
+    </div>
+  </section>
+
+  <footer class="site-footer work-container">
+    <div class="section-divider"></div>
+    <div class="footer-grid">
+      <p>SYS.DATE: [CURRENT_YEAR]</p>
+      <div class="links">
+        <a href="mailto:[EMAIL_LINK]">[EMAIL_TEXT]</a>
+        <a href="[SOCIAL_LINK_1]" target="_blank">[SOCIAL_TEXT_1]</a>
+        <a href="[SOCIAL_LINK_2]" target="_blank">[SOCIAL_TEXT_2]</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
