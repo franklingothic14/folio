@@ -41,9 +41,6 @@ body {
 .axis-3 { left: 75vw; }
 .axis-4 { top: 20vh; }
 
-/* --------------------------------------
-   MICRO DATA
---------------------------------------- */
 .micro-data {
   position: fixed;
   font-size: 0.6rem;
@@ -68,87 +65,109 @@ body {
   font-size: 0.8rem;
   z-index: 10;
 }
-.logo {
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-}
-nav a {
-  color: var(--text-dim);
-  text-decoration: none;
-  margin-left: 30px;
-  transition: color 0.2s;
-}
+.logo { font-size: 1rem; font-weight: 700; letter-spacing: 2px; }
+nav a { color: var(--text-dim); text-decoration: none; margin-left: 30px; transition: color 0.2s; }
 nav a:hover { color: var(--accent); }
 
 /* --------------------------------------
-   GEOMETRY (RADAR & SQUARE)
+   MAIN HERO & SHOWREEL BLOCK (NEW)
 --------------------------------------- */
-.hero-graphic {
-  position: relative;
-  height: 65vh;
+.main-hero-block {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 50px;
+  align-items: center;
+  margin-bottom: 60px;
+  padding: 40px;
+  border: 1px solid var(--line-dim);
+  background: rgba(0,0,0,0.5);
+}
+
+.hero-info .main-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+}
+.hero-info .main-desc {
+  color: var(--text-dim);
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+/* --------------------------------------
+   3D STACKED FOLDERS (NEW)
+--------------------------------------- */
+.stack-wrapper {
+  width: 100%;
+  overflow: hidden; /* Ховаємо те, що вилазить по боках */
+  padding: 50px 0 100px 0;
+}
+
+.folders-stack-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  perspective: 1200px; /* Створює 3D простір */
+  margin-left: 5vw; /* Зсув, щоб компенсувати накладання */
 }
-.radar-circle {
-  position: absolute;
-  top: 5vh;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50vh;
-  height: 50vh;
+
+.stack-folder {
+  position: relative;
+  width: 260px;
+  height: 340px;
+  background: #111;
   border: 1px solid var(--line-dim);
-  border-radius: 50%;
+  margin-left: -150px; /* Накладання один на одного */
+  transform: rotateY(35deg) rotateX(10deg);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), margin 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: -15px 15px 20px rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--text-main);
+  cursor: pointer;
 }
-.radar-inner {
-  position: absolute;
-  top: 15%; left: 15%; right: 15%; bottom: 15%;
-  border: 1px dashed var(--line-dim);
-  border-radius: 50%;
+
+/* Перша папка не має мати відступу зліва */
+.stack-folder:first-child {
+  margin-left: 0;
 }
-.radar-cross {
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 40px; height: 40px;
-  transform: translate(-50%, -50%);
+
+/* Ефект "витягування" диска/папки при наведенні */
+.stack-folder:hover {
+  transform: rotateY(0deg) rotateX(0deg) translateZ(40px) translateY(-20px);
+  margin-left: -100px;
+  margin-right: 50px;
+  z-index: 100 !important;
+  border-color: var(--accent);
+  background: rgba(230, 57, 70, 0.05);
+  box-shadow: 0 25px 50px rgba(230, 57, 70, 0.15);
 }
-.radar-cross::before {
-  content: ''; position: absolute;
-  top: 50%; left: 0; width: 100%; height: 1px;
-  background: var(--accent);
+
+.stack-folder:hover .folder-icon {
+  color: #fff;
 }
-.radar-cross::after {
-  content: ''; position: absolute;
-  top: 0; left: 50%; width: 1px; height: 100%;
-  background: var(--accent);
+
+.folder-content {
+  text-align: center;
 }
-.red-square {
-  position: absolute;
-  top: 30vh;
-  right: 25vw;
-  width: 120px;
-  height: 120px;
-  background-color: var(--accent);
-  z-index: 2;
+.folder-icon {
+  font-size: 2rem;
+  color: var(--accent);
+  margin-bottom: 20px;
+  transition: color 0.3s;
 }
-.hero-text {
-  position: absolute;
-  bottom: 50px;
-  left: 15vw;
-  max-width: 500px;
-  z-index: 3;
-}
-.hero-text h2 {
-  font-size: 1.5rem;
+.folder-name {
+  font-size: 1.2rem;
+  font-weight: 700;
   margin-bottom: 10px;
-  letter-spacing: -0.5px;
+  letter-spacing: 2px;
 }
-.hero-text p {
+.folder-count {
   font-size: 0.75rem;
   color: var(--text-dim);
-  text-transform: uppercase;
 }
 
 /* --------------------------------------
@@ -158,7 +177,7 @@ nav a:hover { color: var(--accent); }
   position: relative;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 15vw 100px 15vw;
+  padding: 0 10vw 100px 10vw;
   z-index: 2;
 }
 
@@ -169,68 +188,14 @@ nav a:hover { color: var(--accent); }
   font-size: 0.8rem;
   letter-spacing: 2px;
 }
-
-.category-section {
-  margin-bottom: 80px;
-}
-
+.category-section { margin-bottom: 80px; }
 .category-title {
   font-size: 0.85rem;
   color: var(--text-main);
   margin-bottom: 30px;
   text-transform: uppercase;
 }
-.category-title::before {
-  content: '>';
-  color: var(--accent);
-  margin-right: 10px;
-}
-
-/* --------------------------------------
-   DYNAMIC FOLDERS
---------------------------------------- */
-.folder-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.folder-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 50px 20px;
-  border: 1px solid var(--line-dim);
-  background: transparent;
-  color: var(--text-main);
-  text-decoration: none;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.folder-card:hover {
-  border-color: var(--accent);
-  background: rgba(230, 57, 70, 0.05);
-}
-
-.folder-icon {
-  font-size: 1.5rem;
-  color: var(--accent);
-  margin-bottom: 15px;
-}
-
-.folder-name {
-  font-size: 1rem;
-  font-weight: 700;
-  margin-bottom: 10px;
-  letter-spacing: 1px;
-}
-
-.folder-count {
-  font-size: 0.7rem;
-  color: var(--text-dim);
-}
+.category-title::before { content: '>'; color: var(--accent); margin-right: 10px; }
 
 .back-btn {
   display: inline-block;
@@ -242,10 +207,7 @@ nav a:hover { color: var(--accent); }
   letter-spacing: 1px;
   transition: color 0.2s;
 }
-
-.back-btn:hover {
-  color: #fff;
-}
+.back-btn:hover { color: #fff; }
 
 /* --------------------------------------
    VIDEO GRID (INSIDE FOLDERS) - MASONRY
@@ -254,37 +216,26 @@ nav a:hover { color: var(--accent); }
   column-count: 3;
   column-gap: 30px;
 }
-
 .project-card {
   background: transparent;
-  margin-bottom: 30px; 
+  margin-bottom: 40px; 
   break-inside: avoid; 
   display: inline-block; 
   width: 100%;
 }
-
 .video-wrap {
   position: relative;
   background: #000;
   border: 1px solid var(--line-dim);
   width: 100%;
   overflow: hidden;
-  /* aspect-ratio is applied dynamically via JavaScript */
 }
-
 .video-wrap iframe {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
+  top: 0; left: 0; width: 100%; height: 100%;
+  border: 0; display: block;
 }
-
-.card-body {
-  padding: 15px 0;
-}
+.card-body { padding: 15px 0; }
 .project-card h3 {
   font-size: 0.8rem;
   text-transform: uppercase;
@@ -292,37 +243,51 @@ nav a:hover { color: var(--accent); }
 }
 
 /* --------------------------------------
-   ABOUT & FOOTER
+   EXTERNAL LINKS & DESCRIPTION
 --------------------------------------- */
-.text-block {
-  font-size: 0.85rem;
+.vid-desc {
+  font-size: 0.7rem;
   color: var(--text-dim);
-  max-width: 700px;
+  margin-top: 5px;
+  line-height: 1.4;
 }
-.text-block p {
-  margin-bottom: 15px;
+.ext-links, .contact-links {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
 }
+.ext-btn {
+  font-size: 0.7rem;
+  text-decoration: none;
+  padding: 8px 15px;
+  border: 1px solid var(--line-dim);
+  transition: all 0.2s ease;
+  letter-spacing: 1px;
+  color: var(--text-main);
+}
+.ext-btn:hover { background: var(--line-dim); color: #fff; }
+.yt-btn { color: #ff0000; border-color: rgba(255, 0, 0, 0.3); }
+.yt-btn:hover { background: rgba(255, 0, 0, 0.1); }
+.ig-btn { color: #E1306C; border-color: rgba(225, 48, 108, 0.3); }
+.ig-btn:hover { background: rgba(225, 48, 108, 0.1); }
 
+/* --------------------------------------
+   FOOTER
+--------------------------------------- */
 .footer-grid {
   display: flex;
   justify-content: space-between;
   font-size: 0.75rem;
   color: var(--text-dim);
 }
-.links a {
-  color: var(--text-dim);
-  text-decoration: none;
-  margin-left: 20px;
-}
-.links a:hover {
-  color: var(--accent);
-}
 
 /* --------------------------------------
-   MOBILE & RESPONSIVE VERSION
+   MOBILE & RESPONSIVE
 --------------------------------------- */
 @media (max-width: 1100px) {
   .masonry-grid { column-count: 2; }
+  .main-hero-block { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
@@ -330,12 +295,25 @@ nav a:hover { color: var(--accent); }
   .axis-red { left: 20px; }
   .site-header { padding: 40px 20px; flex-direction: column; gap: 20px; }
   nav a { margin-left: 0; margin-right: 20px; }
-  .hero-graphic { height: 50vh; }
-  .radar-circle { width: 300px; height: 300px; }
-  .red-square { width: 70px; height: 70px; right: 20px; }
-  .hero-text { left: 40px; right: 20px; bottom: 20px; }
-  .work-container { padding: 0 20px 80px 40px; }
   
-  .folder-grid { grid-template-columns: 1fr; }
+  .folders-stack-container {
+    flex-direction: column;
+    perspective: none;
+    margin-left: 0;
+  }
+  .stack-folder {
+    margin-left: 0 !important;
+    margin-top: -50px; /* Вертикальне накладання на мобільних */
+    transform: none;
+    width: 100%;
+    height: 150px;
+  }
+  .stack-folder:first-child { margin-top: 0; }
+  .stack-folder:hover {
+    transform: translateY(-10px);
+    margin-top: -30px;
+  }
+  
+  .work-container { padding: 0 20px 80px 40px; }
   .masonry-grid { column-count: 1; }
 }
