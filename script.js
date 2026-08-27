@@ -1,9 +1,5 @@
 const API_URL = "https://vimeo.franklingothic14.workers.dev";
-
-// ВАЖЛИВО: Вкажіть тут точний порядок категорій, як ви хочете їх бачити на головній сторінці.
-// Назви мають співпадати з назвами папок/тегів на Vimeo (з урахуванням регістру).
-// Категорії, яких немає в цьому списку, будуть показані в кінці.
-const CATEGORY_ORDER = ["NGO", "documentary", "ADVERTISING", "OTHER_PROJECTS"]; 
+const CATEGORY_ORDER = ["NGO", "DOCUMENTARY", "ADVERTISING", "OTHER_PROJECTS"]; 
 
 async function loadPortfolioVideos() {
   const gridContainer = document.getElementById("work-grid");
@@ -37,11 +33,9 @@ async function loadPortfolioVideos() {
       groupedVideos[cat].push(video);
     });
 
-    // Сортуємо ключі об'єкта groupedVideos відповідно до масиву CATEGORY_ORDER
     const sortedCategories = Object.keys(groupedVideos).sort((a, b) => {
-      let indexA = CATEGORY_ORDER.indexOf(a);
-      let indexB = CATEGORY_ORDER.indexOf(b);
-      // Якщо категорії немає в масиві, відправляємо її в кінець
+      let indexA = CATEGORY_ORDER.indexOf(a.toUpperCase());
+      let indexB = CATEGORY_ORDER.indexOf(b.toUpperCase());
       if (indexA === -1) indexA = 999; 
       if (indexB === -1) indexB = 999;
       return indexA - indexB;
@@ -63,23 +57,22 @@ async function loadPortfolioVideos() {
       section.appendChild(heading);
 
       const grid = document.createElement("div");
-      grid.className = "masonry-grid"; // Змінили клас на masonry-grid
+      grid.className = "masonry-grid"; 
 
       groupedVideos[currentCategory].forEach((video) => {
         const videoId = video.id;
         const title = video.name || "[UNTITLED_PROJECT]";
         const playerParams = "title=0&byline=0&portrait=0&color=e63946";
         
-        // Визначаємо співвідношення сторін. Якщо Vimeo не віддає width/height, ставимо 16/9 за замовчуванням.
-        // Оскільки наш Worker зараз повертає спрощений об'єкт, ми симулюємо пропорції. 
-        // В ідеалі Worker має повертати video.width і video.height. 
-        // Поки що CSS буде робити магію.
+        // Calculate dynamic aspect ratio based on API data
+        const ratio = (video.width && video.height) ? `${video.width} / ${video.height}` : "16 / 9";
         
         const card = document.createElement("article");
         card.className = "project-card";
         
+        // Injecting the aspect ratio directly into the HTML style
         card.innerHTML = `
-          <div class="video-wrap">
+          <div class="video-wrap" style="aspect-ratio: ${ratio};">
             <iframe 
               src="https://player.vimeo.com/video/${videoId}?${playerParams}"
               frameborder="0"
@@ -101,7 +94,6 @@ async function loadPortfolioVideos() {
       const folderGrid = document.createElement("div");
       folderGrid.className = "folder-grid";
 
-      // Використовуємо відсортований масив категорій
       sortedCategories.forEach(catName => {
         const catVideos = groupedVideos[catName];
         const folder = document.createElement("a");
